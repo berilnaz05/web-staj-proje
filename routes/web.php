@@ -4,10 +4,27 @@ use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AdminController;
 
+//Anasayfa
+use App\Models\User;
+use App\Models\Artwork;
+use App\Models\Comment;
 
-// Ana sayfa
 Route::get('/', function () {
-    return view('welcome');
+
+    $userCount = User::count();
+    $artworkCount = Artwork::count();
+    $commentCount = Comment::count();
+
+    $latestArtworks = Artwork::latest()
+        ->take(6)
+        ->get();
+
+    return view('welcome', compact(
+        'userCount',
+        'artworkCount',
+        'commentCount',
+        'latestArtworks'
+    ));
 });
 
 
@@ -35,7 +52,11 @@ Route::get('/admin/sikayetler', [AdminController::class, 'sikayetler'])
 
 // Kullanıcı dashboard
 Route::get('/dashboard', function () {
-    return view('dashboard');
+
+    $artworks = Artwork::latest()->take(6)->get();
+
+    return view('dashboard', compact('artworks'));
+
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 

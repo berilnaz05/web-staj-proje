@@ -25,21 +25,29 @@ class AdminController extends Controller
 
     public function kullanicilar()
     {
-        return view('admin.kullanicilar');
+        $users = User::latest()->get();
+
+        return view('admin.kullanicilar', compact('users'));
     }
 
     public function eserler()
     {
-        return view('admin.eserler');
+        $artworks = Artwork::latest()->get();
+
+        return view('admin.eserler', compact('artworks'));
     }
 
     public function yorumlar()
     {
-        return view('admin.yorumlar');
+        $comments = Comment::latest()->get();
+
+        return view('admin.yorumlar', compact('comments'));
     }
 
     public function sikayetler()
     {
-        return view('admin.sikayetler');
+        $reports = Report::latest()->get();
+
+        return view('admin.sikayetler', compact('reports'));
     }
 }
