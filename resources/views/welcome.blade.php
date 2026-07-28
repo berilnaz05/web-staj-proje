@@ -20,7 +20,10 @@
             <div class="hidden md:flex space-x-8 text-gray-700 font-medium">
                 <a href="#anasayfa" class="hover:text-purple-600">Ana Sayfa</a>
                 <a href="#eserler" class="hover:text-purple-600">Eserler</a>
-                <a href="#sanatpazarı" class="hover:text-purple-600">Sanat Pazarı</a>
+                <a href="{{ route('sanat-pazari') }}"
+                class="hover:text-purple-600">
+                Sanat Pazarı </a>
+
                 <a href="#topluluk" class="hover:text-purple-600">Topluluk</a>
                 <a href="#hakkimizda" class="hover:text-purple-600">Hakkımızda</a>
                 <a href="#iletisim" class="hover:text-purple-600">İletişim</a>
@@ -115,39 +118,64 @@
 
     </section>
 
-    <!-- Topluluk -->
-    <section id="topluluk" class="max-w-7xl mx-auto py-16 px-6">
+    <!-- Sanat Pazarı -->
+    <section id="sanatpazari" class="max-w-7xl mx-auto py-16 px-6">
 
-        <h3 class="text-3xl font-bold text-center mb-10">
-            Topluluğumuz
-        </h3>
+    <h3 class="text-3xl font-bold text-center mb-10">
+        Sanat Pazarı
+    </h3>
 
-        <div class="grid md:grid-cols-3 gap-6 text-center">
 
-            <div class="bg-white p-8 rounded-xl shadow">
-                <h4 class="text-4xl font-bold text-purple-600">
-                    {{ $userCount }}
-                </h4>
-                <p class="mt-2">Kullanıcı</p>
+    <div class="grid md:grid-cols-3 gap-6">
+
+        @forelse($products as $product)
+
+            <div class="bg-white rounded-xl shadow overflow-hidden">
+
+                <img src="{{ asset('storage/'.$product->image) }}"
+                     class="w-full h-56 object-cover">
+
+
+                <div class="p-5">
+
+                    <h4 class="font-bold text-lg">
+                        {{ $product->title }}
+                    </h4>
+
+
+                    <p class="text-gray-500 text-sm mt-2">
+                        {{ $product->category }}
+                    </p>
+
+
+                    <p class="text-purple-600 font-bold mt-3">
+                        {{ number_format($product->price, 2, ',', '.') }} ₺
+                    </p>
+
+
+                    <a href="{{ route('products.show',$product->id) }}"
+                       class="block text-center mt-4 bg-purple-600 text-white py-2 rounded-lg hover:bg-purple-700">
+                        İncele
+                    </a>
+
+
+                </div>
+
             </div>
 
-            <div class="bg-white p-8 rounded-xl shadow">
-                <h4 class="text-4xl font-bold text-purple-600">
-                    {{ $artworkCount }}
-                </h4>
-                <p class="mt-2">Eser</p>
-            </div>
 
-            <div class="bg-white p-8 rounded-xl shadow">
-                <h4 class="text-4xl font-bold text-purple-600">
-                    {{ $commentCount }}
-                </h4>
-                <p class="mt-2">Yorum</p>
-            </div>
+        @empty
 
-        </div>
+            <p class="text-center text-gray-500 col-span-3">
+                Henüz satışta ürün bulunmuyor.
+            </p>
 
-    </section>
+        @endforelse
+
+
+    </div>
+
+</section>
 
     <!-- Son Eklenen Eserler -->
     <section id="eserler" class="max-w-7xl mx-auto py-16 px-6">

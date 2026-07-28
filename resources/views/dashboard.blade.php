@@ -3,74 +3,67 @@
 <div class="min-h-screen bg-gray-100">
 
     <!-- Üst Navbar -->
-    <div class="bg-white shadow">
+    
 
-        <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
+        <nav class="bg-white shadow">
 
-            <div class="flex items-center gap-8">
+    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-                <h1 class="text-3xl font-bold text-purple-700">
-                    ArtYum
-                </h1>
+        <div class="flex items-center gap-10">
 
-                <div class="hidden md:flex gap-6 text-gray-700">
+            <div class="hidden md:flex items-center gap-6 text-gray-700 font-medium">
 
-                    <a href="#" class="hover:text-purple-600 ">
-                        Ana Sayfa
-                    </a>
-
-                    <a href="#" class="hover:text-purple-600">
-                        Keşfet
-                    </a>
-
-                    <a href="#" class="hover:text-purple-600">
-                        Sanat Pazarı
-                    </a>
-
-                    <a href="#" class="hover:text-purple-600">
-                        Eserler
-                    </a>
-
-                    <a href="#" class="hover:text-purple-600">
-                        Topluluk
-                    </a>
-
-                </div>
-
-            </div>
-
-            <div class="flex items-center gap-6 text-xl">
-
-                <a href="#" class="relative">
-                    👥
-                    <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
-                        2
-                    </span>
+                <a href="#" class="hover:text-purple-600">
+                    Keşfet
                 </a>
 
-                <a href="#" class="relative">
-                    🔔
-                    <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
-                        5
-                    </span>
+                <a href="{{ route('sanat-pazari') }}"
+                   class="hover:text-purple-600">
+                    Sanat Pazarı
                 </a>
 
-                <a href="#" class="relative">
-                    ✉️
-                    <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
-                        1
-                    </span>
-                </a>
-
-                <a href="{{ route('profile.edit') }}">
-                   👤  
+                <a href="#" class="hover:text-purple-600">
+                    Eserler
                 </a>
 
             </div>
 
         </div>
 
+        <div class="flex items-center gap-6 text-xl">
+
+            <a href="#" class="relative">
+                👥
+                <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
+                    2
+                </span>
+            </a>
+
+            <a href="#" class="relative">
+                🔔
+                <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
+                    5
+                </span>
+            </a>
+
+            <a href="#" class="relative">
+                ✉️
+                <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
+                    1
+                </span>
+            </a>
+
+            <a href="{{ route('profile.edit') }}">
+                👤
+            </a>
+
+        </div>
+
     </div>
+
+</nav>
+
+    
 
     <!-- Ana Alan -->
     <div class="max-w-7xl mx-auto px-6 py-8">
@@ -82,19 +75,23 @@
 
                 <div class="bg-white rounded-xl shadow p-5">
 
-                    <a href="#"
-                       class="block w-full text-center bg-purple-600 text-white py-3 rounded-lg mb-6 hover:bg-purple-700">
-                        + Eser Yükle
+                    <a href="{{ route('products.create') }}"
+                    class="block w-full text-center bg-purple-600 text-white py-3 rounded-lg mb-6 hover:bg-purple-700">
+                    + Ürün Sat
                     </a>
 
                     <div class="space-y-3">
+
+                        <a href="{{ route('urunlerim') }}" class="block p-3 rounded-lg hover:bg-gray-100">
+                             Ürünlerim
+                        </a>
 
                         <a href="#" class="block p-3 rounded-lg hover:bg-gray-100">
                              Eserlerim
                         </a>
 
-                        <a href="#" class="block p-3 rounded-lg hover:bg-gray-100">
-                             Keşfet
+                        <a href={{route("sanat-pazari")}} class="block p-3 rounded-lg hover:bg-gray-100">
+                             Sanat Pazarım
                         </a>
 
                         <a href="#" class="block p-3 rounded-lg hover:bg-gray-100">

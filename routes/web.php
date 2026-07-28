@@ -9,6 +9,22 @@ use App\Models\User;
 use App\Models\Artwork;
 use App\Models\Comment;
 
+use App\Models\Product;
+use App\Http\Controllers\ProductController;
+
+Route::get('/urun/{product}', [ProductController::class, 'show'])
+    ->name('products.show');
+
+Route::get('/sanat-pazari', function () {
+
+    $products = Product::latest()
+        ->where('status', 'satista')
+        ->get();
+
+    return view('sanat-pazari', compact('products'));
+})->name('sanat-pazari');
+
+
 Route::get('/', function () {
 
     $userCount = User::count();
@@ -19,11 +35,17 @@ Route::get('/', function () {
         ->take(6)
         ->get();
 
+    $products = Product::latest()
+        ->where('status', 'satista')
+        ->take(6)
+        ->get();
+
     return view('welcome', compact(
         'userCount',
         'artworkCount',
         'commentCount',
-        'latestArtworks'
+        'latestArtworks',
+        'products'
     ));
 });
 
@@ -53,14 +75,54 @@ Route::get('/admin/sikayetler', [AdminController::class, 'sikayetler'])
 // Kullanıcı dashboard
 Route::get('/dashboard', function () {
 
-    $artworks = Artwork::latest()->take(6)->get();
+    $artworks = Artwork::where('user_id', auth()->id())
+        ->latest()
+        ->get();
 
     return view('dashboard', compact('artworks'));
 
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+    Route::get('/urun/{product}', [ProductController::class, 'show'])
+    ->name('products.show');
 
-Route::middleware('auth')->group(function () {
+    Route::middleware('auth')->group(function () {
+
+
+
+
+
+    Route::post('/urun/{product}/yorum',[ProductController::class, 'comment'])
+        ->name('products.comment');
+
+    Route::get('/urun/{product}/duzenle', [ProductController::class, 'edit'])
+        ->name('products.edit');
+
+    Route::put('/urun/{product}', [ProductController::class, 'update'])
+        ->name('products.update');
+
+
+    Route::delete('/urun/{product}', [ProductController::class, 'destroy'])
+        ->name('products.destroy');
+
+    Route::patch('/urun/{product}/satildi', [ProductController::class, 'updateStatus'])
+        ->name('products.sold');
+
+    Route::get('/urunlerim', function () {
+
+    $products = Product::where('user_id', auth()->id())
+        ->latest()
+        ->get();
+
+    return view('urunlerim', compact('products'));
+
+    })->name('urunlerim');
+
+    Route::get('/urun-ekle', [ProductController::class, 'create'])
+        ->name('products.create');
+
+    Route::post('/urun-ekle', [ProductController::class, 'store'])
+        ->name('products.store');
     Route::get('/profile', [ProfileController::class, 'edit'])
         ->name('profile.edit');
 

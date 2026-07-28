@@ -43,5 +43,19 @@
                 {{ __('Giriş Yap') }}
             </x-primary-button>
         </div>
+
+
+        <div class="mt-6 text-center">
+
+            <span class="text-gray-600">
+                Hesabın yok mu?
+            </span>
+
+            <a href="{{ route('register') }}"
+            class="text-purple-600 font-semibold hover:text-purple-800">
+                Kayıt Ol
+            </a>
+
+        </div>
     </form>
 </x-guest-layout>
