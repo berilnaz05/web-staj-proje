@@ -29,6 +29,10 @@
                     Eserler
                     </a>
 
+                    <a href="{{ route('admin.urunler') }}" class="block p-3 rounded-xl bg-purple-600 hover:bg-purple-700" >
+                    Ürünler
+                    </a>
+
                     <a href="{{ route('admin.sikayetler') }}" class="block p-3 rounded-xl bg-purple-600 hover:bg-purple-700" >
                     Şikayetler
                     </a>

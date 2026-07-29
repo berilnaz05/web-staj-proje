@@ -10,25 +10,17 @@ return new class extends Migration
      * Run the migrations.
      */
     public function up(): void
-{
-    Schema::table('comments', function (Blueprint $table) {
-
-        $table->foreignId('product_id')
-              ->nullable()
-              ->after('artwork_id')
-              ->constrained()
-              ->onDelete('cascade');
-
-    });
-}
-
-
+    {
+        Schema::table('products', function (Blueprint $table) {
+            $table->string('category')->after('image');
+        });
+    }
     /**
      * Reverse the migrations.
      */
     public function down(): void
     {
-        Schema::table('comments', function (Blueprint $table) {
+        Schema::table('products', function (Blueprint $table) {
             //
         });
     }

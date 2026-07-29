@@ -6,9 +6,31 @@ use App\Models\User;
 use App\Models\Artwork;
 use App\Models\Comment;
 use App\Models\Report;
+use App\Models\Product;
 
 class AdminController extends Controller
 {
+
+
+
+    public function deleteProduct(Product $product)
+    {
+        $product->delete();
+
+        return back()->with(
+            'success',
+            'Ürün silindi.'
+        );
+    }
+
+    public function urunler()
+    {
+        $products = Product::latest()->get();
+
+        return view('admin.urunler', compact('products'));
+    }
+
+
     public function dashboard()
     {
         if (auth()->user()->role !== 'admin') {

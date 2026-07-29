@@ -75,6 +75,54 @@
 
             </table>
 
+            <x-app-layout>
+
+<div class="max-w-6xl mx-auto py-10 px-6">
+
+    <h1 class="text-3xl font-bold mb-8">
+        Kullanıcılar
+    </h1>
+
+    <div class="grid md:grid-cols-3 gap-6">
+
+        @foreach($users as $user)
+
+        <div class="bg-white rounded-xl shadow p-6">
+
+            <h2 class="text-xl font-bold">
+                {{ $user->name }}
+            </h2>
+
+            <p class="text-gray-500">
+                {{ $user->email }}
+            </p>
+
+            <form
+                action="{{ route('friend.send',$user->id) }}"
+                method="POST"
+                class="mt-4">
+
+                @csrf
+
+                <button
+                    class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+
+                    Arkadaş Ekle
+
+                </button>
+
+            </form>
+
+        </div>
+
+        @endforeach
+
+    </div>
+
+</div>
+
+</x-app-layout>
+
         </div>
 
     </div>

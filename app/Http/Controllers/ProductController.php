@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\ProductComment;
+
 
 
 class ProductController extends Controller
@@ -15,7 +17,8 @@ class ProductController extends Controller
     ]);
 
 
-    Comment::create([
+
+    ProductComment::create([
 
         'user_id' => auth()->id(),
 
@@ -27,11 +30,24 @@ class ProductController extends Controller
 
     return back();
     }
-
+ 
 
     public function show(Product $product)
     {
+        $product->load('comments.user');
+
         return view('products.show', compact('product'));
+    }
+
+   public function deleteComment(ProductComment $comment)
+    {
+        if ($comment->user_id != auth()->id()) {
+            abort(403);
+        }
+
+        $comment->delete();
+
+        return back()->with('success', 'Yorum silindi.');
     }
 
 

@@ -68,13 +68,7 @@
 
 </nav>
 
-
-
-
-
 <div class="max-w-6xl mx-auto px-6 py-10">
-
-
 
     <!-- Ürün Kartı -->
 
@@ -95,21 +89,14 @@
                     <img src="{{ asset('storage/'.$product->image) }}"
                          class="w-full h-[450px] object-cover">
 
-
                 @else
 
                     <div class="h-[450px] flex items-center justify-center text-gray-400">
                         Görsel Yok
                     </div>
-
                 @endif
 
-
-
             </div>
-
-
-
 
 
             <!-- Bilgiler -->
@@ -125,8 +112,6 @@
                 </h1>
 
 
-
-
                 <p class="text-gray-600 leading-relaxed mb-6">
 
                     {{ $product->description }}
@@ -135,16 +120,11 @@
 
 
 
-
-
                 <div class="text-3xl font-bold text-purple-600 mb-6">
 
                     {{ number_format($product->price,2,',','.') }} ₺
 
                 </div>
-
-
-
 
 
                 <div class="space-y-3 text-gray-700">
@@ -171,8 +151,6 @@
                     </p>
 
 
-
-
                     <p>
                         📦 Durum:
 
@@ -195,9 +173,6 @@
 
 
                 </div>
-
-
-
 
 
                 <!-- Satın Alma -->
@@ -250,158 +225,93 @@
 
     </div>
 
+<!-- Yorumlar -->
 
+<div class="bg-white rounded-2xl shadow mt-8 p-6">
 
+    <h2 class="text-2xl font-bold mb-6">
+        Yorumlar
+    </h2>
 
+    @forelse($product->comments as $comment)
 
+        <div class="border-b pb-4 mb-4">
 
-    <!-- Yorumlar -->
-
-
-    <div class="bg-white rounded-2xl shadow mt-8 p-6">
-
-
-
-        <h2 class="text-2xl font-bold mb-6">
-
-            Yorumlar
-
-        </h2>
-
-
-
-
-
-        @forelse($product->comments as $comment)
-
-
-
-            <div class="border-b pb-4 mb-4">
-
+            <div class="flex justify-between items-center">
 
                 <div class="font-bold">
-
                     {{ $comment->user->name }}
-
                 </div>
 
+                @if(auth()->check() && auth()->id() == $comment->user_id)
 
+                    <form action="{{ route('products.comment.delete', $comment->id) }}"
+                          method="POST">
 
-                <p class="text-gray-600 mt-2">
+                        @csrf
+                        @method('DELETE')
 
-                    {{ $comment->content }}
+                        <button
+                            onclick="return confirm('Yorumu silmek istiyor musun?')"
+                            class="text-red-600 hover:text-red-800">
 
-                </p>
+                            Sil
 
+                        </button>
 
+                    </form>
+
+                @endif
 
             </div>
 
-
-
-        @empty
-
-
-
-            <p class="text-gray-500">
-
-                Henüz yorum yapılmamış.
-
+            <p class="text-gray-600 mt-2">
+                {{ $comment->content }}
             </p>
 
+        </div>
 
+    @empty
 
-        @endforelse
-
-
-
-
-
-
-        @auth
-
-
-
-            <form action="{{ route('products.comment',$product->id) }}"
-                  method="POST"
-                  class="mt-6">
-
-
-                @csrf
-
-
-
-                <textarea
-                    name="content"
-                    rows="4"
-                    class="w-full border rounded-xl p-4 focus:ring-purple-500"
-                    placeholder="Bu ürün hakkında düşüncelerini yaz..."></textarea>
-
-
-
-                <button
-                    class="mt-3 bg-purple-600 text-white px-6 py-3 rounded-xl hover:bg-purple-700">
-
-                    Yorum Yap
-
-                </button>
-
-
-            </form>
-
-
-
-
-        @else
-
-
-
-            <a href="{{ route('login') }}"
-               class="inline-block mt-5 text-purple-600 hover:underline">
-
-                Yorum yapmak için giriş yap
-
-            </a>
-
-
-
-        @endauth
-
-
-
-
-    </div>
-
-
-
-</div>
-
-
-
-
-
-<footer class="bg-gray-900 text-white mt-16">
-
-    <div class="max-w-7xl mx-auto px-6 py-8 text-center">
-
-
-        <h3 class="text-xl font-bold">
-            ArtYum
-        </h3>
-
-
-        <p class="text-gray-400 mt-2">
-            Sanatçılar ve sanatseverler için sosyal sanat platformu.
+        <p class="text-gray-500">
+            Henüz yorum yapılmamış.
         </p>
 
-
-    </div>
-
-
-</footer>
+    @endforelse
 
 
+    @auth
 
-</body>
+        <form action="{{ route('products.comment', $product->id) }}"
+              method="POST"
+              class="mt-6">
 
-</html>
+            @csrf
+
+            <textarea
+                name="content"
+                rows="4"
+                class="w-full border rounded-xl p-4 focus:ring-purple-500"
+                placeholder="Bu ürün hakkında düşüncelerini yaz..."></textarea>
+
+            <button
+                class="mt-3 bg-purple-600 text-white px-6 py-3 rounded-xl hover:bg-purple-700">
+
+                Yorum Yap
+
+            </button>
+
+        </form>
+
+    @else
+
+        <a href="{{ route('login') }}"
+           class="inline-block mt-5 text-purple-600 hover:underline">
+
+            Yorum yapmak için giriş yap
+
+        </a>
+
+    @endauth
+
+</div>

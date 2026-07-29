@@ -3,28 +3,25 @@
 <div class="min-h-screen bg-gray-100">
 
     <!-- Üst Navbar -->
+    @php
+    $friendRequestCount = \App\Models\Friend::where(
+        'receiver_id',
+        auth()->id()
+    )
+    ->where('status','pending')
+    ->count();
+    @endphp
     
-
-        <nav class="bg-white shadow">
+<nav class="bg-white shadow">
 
     <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
         <div class="flex items-center gap-10">
 
+            
+
             <div class="hidden md:flex items-center gap-6 text-gray-700 font-medium">
 
-                <a href="#" class="hover:text-purple-600">
-                    Keşfet
-                </a>
-
-                <a href="{{ route('sanat-pazari') }}"
-                   class="hover:text-purple-600">
-                    Sanat Pazarı
-                </a>
-
-                <a href="#" class="hover:text-purple-600">
-                    Eserler
-                </a>
 
             </div>
 
@@ -32,8 +29,9 @@
 
         <div class="flex items-center gap-6 text-xl">
 
-            <a href="#" class="relative">
-                👥
+            <a href="{{ route('friend.requests') }}" class="relative">
+            👥
+            </a>
                 <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
                     2
                 </span>
@@ -41,9 +39,11 @@
 
             <a href="#" class="relative">
                 🔔
+                @if($friendRequestCount > 0)
                 <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
-                    5
+                    {{ $friendRequestCount }}
                 </span>
+                @endif
             </a>
 
             <a href="#" class="relative">
@@ -62,7 +62,6 @@
     </div>
 
 </nav>
-
     
 
     <!-- Ana Alan -->
@@ -92,6 +91,10 @@
 
                         <a href={{route("sanat-pazari")}} class="block p-3 rounded-lg hover:bg-gray-100">
                              Sanat Pazarım
+                        </a>
+
+                        <a href="#" class="block p-3 rounded-lg hover:bg-gray-100">
+                             Keşfet
                         </a>
 
                         <a href="#" class="block p-3 rounded-lg hover:bg-gray-100">

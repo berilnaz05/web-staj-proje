@@ -18,13 +18,10 @@
             </h1>
 
             <div class="hidden md:flex space-x-8 text-gray-700 font-medium">
-                <a href="#anasayfa" class="hover:text-purple-600">Ana Sayfa</a>
-                <a href="#eserler" class="hover:text-purple-600">Eserler</a>
-                <a href="{{ route('sanat-pazari') }}"
-                class="hover:text-purple-600">
+                <a href="#seriler" class="hover:text-purple-600">Seriler</a>
+                <a href="{{ route('sanat-pazari') }}"class="hover:text-purple-600">
                 Sanat Pazarı </a>
 
-                <a href="#topluluk" class="hover:text-purple-600">Topluluk</a>
                 <a href="#hakkimizda" class="hover:text-purple-600">Hakkımızda</a>
                 <a href="#iletisim" class="hover:text-purple-600">İletişim</a>
             </div>
@@ -69,7 +66,7 @@
                 Hemen Katıl
             </a>
 
-            <a href="#eserler"
+            <a href="sanat-pazari"
                class="border border-white px-6 py-3 rounded-xl">
                 Eserleri Keşfet
             </a>
@@ -177,42 +174,6 @@
 
 </section>
 
-    <!-- Son Eklenen Eserler -->
-    <section id="eserler" class="max-w-7xl mx-auto py-16 px-6">
-
-        <h3 class="text-3xl font-bold text-center mb-10">
-            Son Eklenen Eserler
-        </h3>
-
-        <div class="grid md:grid-cols-3 gap-6">
-
-            <div class="bg-white rounded-xl shadow overflow-hidden">
-                <div class="h-56 bg-purple-200"></div>
-                <div class="p-5">
-                    <h4 class="font-bold text-lg">Gün Batımı</h4>
-                    <p class="text-gray-600">Yağlı boya manzara çalışması.</p>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow overflow-hidden">
-                <div class="h-56 bg-pink-200"></div>
-                <div class="p-5">
-                    <h4 class="font-bold text-lg">Portre Çalışması</h4>
-                    <p class="text-gray-600">Dijital sanat örneği.</p>
-                </div>
-            </div>
-
-            <div class="bg-white rounded-xl shadow overflow-hidden">
-                <div class="h-56 bg-indigo-200"></div>
-                <div class="p-5">
-                    <h4 class="font-bold text-lg">Fantastik Dünya</h4>
-                    <p class="text-gray-600">Konsept tasarım çalışması.</p>
-                </div>
-            </div>
-
-        </div>
-
-    </section>
 
     <!-- Footer -->
     <footer id="iletisim" class="bg-gray-900 text-white mt-16">

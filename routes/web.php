@@ -11,6 +11,27 @@ use App\Models\Comment;
 
 use App\Models\Product;
 use App\Http\Controllers\ProductController;
+ use App\Http\Controllers\FriendController;
+
+ use App\Models\Friend;
+
+
+Route::get('/arkadaslik-istekleri', function () {
+
+    $requests = Friend::where(
+        'receiver_id',
+        auth()->id()
+    )
+    ->where('status', 'pending')
+    ->get();
+
+    return view(
+        'arkadaslik-istekleri',
+        compact('requests')
+    );
+
+})->middleware('auth')->name('friend.requests');
+
 
 Route::get('/urun/{product}', [ProductController::class, 'show'])
     ->name('products.show');
@@ -51,6 +72,16 @@ Route::get('/', function () {
 
 
 // Admin paneli
+
+
+Route::delete('/admin/urunler/{product}',[AdminController::class, 'deleteProduct'])
+    ->middleware(['auth', 'admin'])
+    ->name('admin.product.delete');
+
+Route::get('/admin/urunler', [AdminController::class, 'urunler'])
+    ->middleware(['auth', 'admin'])
+    ->name('admin.urunler');
+
 Route::get('/admin', [AdminController::class, 'dashboard'])
     ->middleware(['auth', 'admin'])
     ->name('admin.dashboard');
@@ -89,8 +120,30 @@ Route::get('/dashboard', function () {
     Route::middleware('auth')->group(function () {
 
 
+   
+
+Route::middleware('auth')->group(function () {
+
+    Route::post('/friend/send/{user}',
+        [FriendController::class, 'send'])
+        ->name('friend.send');
+
+    Route::post('/friend/accept/{friend}',
+        [FriendController::class, 'accept'])
+        ->name('friend.accept');
+
+    Route::post('/friend/reject/{friend}',
+        [FriendController::class, 'reject'])
+        ->name('friend.reject');
+
+});
 
 
+    Route::delete('/yorum-sil/{comment}',[ProductController::class, 'deleteComment']
+        )->name('products.comment.delete');
+
+    Route::post('/urun/{product}/yorum', [ProductController::class, 'comment'])
+    ->name('products.comment');
 
     Route::post('/urun/{product}/yorum',[ProductController::class, 'comment'])
         ->name('products.comment');
@@ -131,6 +184,21 @@ Route::get('/dashboard', function () {
 
     Route::delete('/profile', [ProfileController::class, 'destroy'])
         ->name('profile.destroy');
+
+
+    Route::get('/kullanicilar', function () {
+
+    $users = \App\Models\User::where(
+        'id',
+        '!=',
+        auth()->id()
+    )->get();
+
+    return view('kullanicilar', compact('users'));
+
+})->middleware('auth')->name('users.index');
+    
+
 });
 
 
