@@ -3,42 +3,35 @@
 <div class="max-w-4xl mx-auto py-10 px-6">
 
     <h1 class="text-3xl font-bold mb-8">
-        Arkadaşlık İstekleri
+        Bildirimler
     </h1>
 
     @forelse($requests as $request)
 
-    <div class="bg-white shadow rounded-xl p-5 mb-4">
+    <div class="bg-white p-5 rounded-xl shadow mb-4">
 
-        <h2 class="font-bold">
-            {{ $request->sender->name }}
-        </h2>
+        <p class="mb-4">
+            <strong>{{ $request->sender->name }}</strong>
+            sana arkadaşlık isteği gönderdi.
+        </p>
 
-        <div class="flex gap-3 mt-4">
+        <div class="flex gap-3">
 
-            <form
-                action="{{ route('friend.accept',$request->id) }}"
-                method="POST">
-
+            <form action="{{ route('friend.accept', $request->id) }}"
+                  method="POST">
                 @csrf
 
-                <button
-                    class="bg-green-600 text-white px-4 py-2 rounded-lg">
-
+                <button class="bg-green-500 text-white px-4 py-2 rounded-lg">
                     Kabul Et
                 </button>
 
             </form>
 
-            <form
-                action="{{ route('friend.reject',$request->id) }}"
-                method="POST">
-
+            <form action="{{ route('friend.reject', $request->id) }}"
+                  method="POST">
                 @csrf
 
-                <button
-                    class="bg-red-600 text-white px-4 py-2 rounded-lg">
-
+                <button class="bg-red-500 text-white px-4 py-2 rounded-lg">
                     Reddet
                 </button>
 
@@ -50,7 +43,9 @@
 
     @empty
 
-    <p>Bekleyen arkadaşlık isteği yok.</p>
+    <p class="text-gray-500">
+        Yeni bildirimin yok.
+    </p>
 
     @endforelse
 

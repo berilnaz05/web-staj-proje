@@ -27,37 +27,36 @@
 
         </div>
 
-        <div class="flex items-center gap-6 text-xl">
+            <div class="flex items-center gap-4">
 
-            <a href="{{ route('friend.requests') }}" class="relative">
+        <form action="{{ route('search') }}" method="GET">
+
+            <input
+                type="text"
+                name="q"
+                placeholder="Eser, ürün veya kullanıcı ara..."
+                class="border rounded-full px-4 py-2 w-72">
+
+        </form>
+
+        <a href="{{ route('friend.requests') }}" class="relative">
             👥
-            </a>
-                <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
-                    2
-                </span>
-            </a>
+        </a>
 
-            <a href="#" class="relative">
-                🔔
-                @if($friendRequestCount > 0)
-                <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
-                    {{ $friendRequestCount }}
-                </span>
-                @endif
-            </a>
+        <a href="{{ route('friend.requests') }}" class="relative">
+            🔔
+            @if($friendRequestCount > 0)
+            <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
+                {{ $friendRequestCount }}
+            </span>
+            @endif
+        </a>
 
-            <a href="#" class="relative">
-                ✉️
-                <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
-                    1
-                </span>
-            </a>
+        <a href="{{ route('profile.edit') }}">
+            👤
+        </a>
 
-            <a href="{{ route('profile.edit') }}">
-                👤
-            </a>
-
-        </div>
+    </div>
 
     </div>
 
@@ -97,8 +96,9 @@
                              Keşfet
                         </a>
 
-                        <a href="#" class="block p-3 rounded-lg hover:bg-gray-100">
-                             Arkadaşlar
+                        <a href="{{ route('dashboard',['tab'=>'friends']) }}"
+                        class="block p-3 rounded-lg hover:bg-gray-100">
+                            Arkadaşlar
                         </a>
 
                         <a href="#" class="block p-3 rounded-lg hover:bg-gray-100">
@@ -121,62 +121,97 @@
             </div>
 
             <!-- İçerik -->
-            <div class="col-span-12 md:col-span-9">
+            <!-- İçerik -->
+<div class="col-span-12 md:col-span-9">
 
-                <div class="mb-10">
+    @if($tab == 'friends')
 
-                    <h2 class="text-2xl font-bold mb-6">
-                        Son Eklenen Eserler
-                    </h2>
+        <div class="mb-10">
 
-                    <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <h2 class="text-2xl font-bold mb-6">
+                Arkadaşlarım
+            </h2>
 
-                        @forelse($artworks as $artwork)
+            <div class="grid md:grid-cols-2 gap-4">
 
-                            <div class="bg-white rounded-xl shadow overflow-hidden">
+                @forelse($friends as $friend)
 
-                                <img
-                                    src="{{ asset('storage/' . $artwork->image) }}"
-                                    class="w-full h-56 object-cover"
-                                >
+                    @php
+                        $user =
+                            $friend->sender_id == auth()->id()
+                                ? $friend->receiver
+                                : $friend->sender;
+                    @endphp
 
-                                <div class="p-4">
+                    <div class="bg-white rounded-xl shadow p-5">
 
-                                    <h3 class="font-bold text-lg">
-                                        {{ $artwork->title }}
-                                    </h3>
-
-                                    <p class="text-gray-500 text-sm mt-2">
-                                        {{ $artwork->user->name ?? 'Sanatçı' }}
-                                    </p>
-
-                                    <div class="flex gap-4 mt-3 text-sm text-gray-500">
-                                        <span> 0</span>
-                                        <span> 0</span>
-                                    </div>
-
-                                </div>
-
-                            </div>
-
-                        @empty
-
-                            <div class="col-span-3 text-center text-gray-500">
-                                Henüz eser paylaşılmamış.
-                            </div>
-
-                        @endforelse
+                        <h3 class="font-bold text-lg">
+                            👤 {{ $user->name }}
+                        </h3>
 
                     </div>
 
-                </div>
+                @empty
+
+                    <div class="text-gray-500">
+                        Henüz arkadaşın yok.
+                    </div>
+
+                @endforelse
 
             </div>
 
         </div>
 
-    </div>
+    @else
+
+        <div class="mb-10">
+
+            <h2 class="text-2xl font-bold mb-6">
+                Son Eklenen Eserler
+            </h2>
+
+            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                @forelse($artworks as $artwork)
+
+                    <div class="bg-white rounded-xl shadow overflow-hidden">
+
+                        <img
+                            src="{{ asset('storage/' . $artwork->image) }}"
+                            class="w-full h-56 object-cover"
+                        >
+
+                        <div class="p-4">
+
+                            <h3 class="font-bold text-lg">
+                                {{ $artwork->title }}
+                            </h3>
+
+                            <p class="text-gray-500 text-sm mt-2">
+                                {{ $artwork->user->name ?? 'Sanatçı' }}
+                            </p>
+
+                            <div class="flex gap-4 mt-3 text-sm text-gray-500">
+                                <span>0</span>
+                                <span>0</span>
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                @empty
+
+                    <div class="col-span-3 text-center text-gray-500">
+                        Henüz eser paylaşılmamış.
+                    </div>
+
+                @endforelse
+
+            </div>
+        </div>
+    @endif
 
 </div>
-
 </x-app-layout>

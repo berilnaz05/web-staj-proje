@@ -11,9 +11,38 @@ use App\Models\Comment;
 
 use App\Models\Product;
 use App\Http\Controllers\ProductController;
- use App\Http\Controllers\FriendController;
+use App\Http\Controllers\FriendController;
 
- use App\Models\Friend;
+use App\Models\Friend;
+
+use Illuminate\Http\Request;
+
+Route::post('/friend/send/{user}',
+    [FriendController::class, 'send'])
+    ->middleware('auth')
+    ->name('friend.send');
+
+Route::get('/ara', function (Request $request) {
+
+    $q = $request->q;
+
+    $products = Product::where('title', 'like', "%{$q}%")
+        ->get();
+
+    $artworks = Artwork::where('title', 'like', "%{$q}%")
+        ->get();
+
+    $users = User::where('name', 'like', "%{$q}%")
+        ->get();
+
+    return view('search', compact(
+        'q',
+        'products',
+        'artworks',
+        'users'
+    ));
+
+})->name('search');
 
 
 Route::get('/arkadaslik-istekleri', function () {
@@ -23,6 +52,7 @@ Route::get('/arkadaslik-istekleri', function () {
         auth()->id()
     )
     ->where('status', 'pending')
+    ->with('sender')
     ->get();
 
     return view(
@@ -104,20 +134,28 @@ Route::get('/admin/sikayetler', [AdminController::class, 'sikayetler'])
 
 
 // Kullanıcı dashboard
-Route::get('/dashboard', function () {
+Route::get('/dashboard', function (Illuminate\Http\Request $request) {
 
     $artworks = Artwork::where('user_id', auth()->id())
         ->latest()
         ->get();
 
-    return view('dashboard', compact('artworks'));
+    $tab = $request->get('tab', 'home');
+
+    $friends = \App\Models\Friend::where('status', 'accepted')
+        ->where(function ($query) {
+            $query->where('sender_id', auth()->id())
+                  ->orWhere('receiver_id', auth()->id());
+        })
+        ->get();
+
+    return view('dashboard', compact(
+        'artworks',
+        'tab',
+        'friends'
+    ));
 
 })->middleware(['auth', 'verified'])->name('dashboard');
-
-    Route::get('/urun/{product}', [ProductController::class, 'show'])
-    ->name('products.show');
-
-    Route::middleware('auth')->group(function () {
 
 
    
@@ -137,7 +175,7 @@ Route::middleware('auth')->group(function () {
         ->name('friend.reject');
 
 });
-
+{;
 
     Route::delete('/yorum-sil/{comment}',[ProductController::class, 'deleteComment']
         )->name('products.comment.delete');
@@ -197,9 +235,8 @@ Route::middleware('auth')->group(function () {
     return view('kullanicilar', compact('users'));
 
 })->middleware('auth')->name('users.index');
-    
 
-});
 
+};
 
 require __DIR__.'/auth.php';
