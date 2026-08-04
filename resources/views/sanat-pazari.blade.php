@@ -13,15 +13,11 @@
     <nav class="bg-white shadow">
         <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
 
-            <a href="{{ url('/') }}"
+            <a href="{{ route('dashboard') }}"
                class="text-3xl font-bold text-purple-700">
                 ArtYum
             </a>
 
-            <a href="{{ url('/') }}"
-               class="text-purple-600 font-medium hover:text-purple-800">
-                Ana Sayfa
-            </a>
 
         </div>
     </nav>
@@ -54,22 +50,22 @@
         <div class="grid md:grid-cols-4 gap-6">
 
             <div class="bg-white rounded-xl shadow p-6 text-center">
-                <div class="text-5xl mb-4">🎨</div>
+                <div class="text-5xl mb-4"></div>
                 <h3 class="font-bold text-lg">Yağlı Boya</h3>
             </div>
 
             <div class="bg-white rounded-xl shadow p-6 text-center">
-                <div class="text-5xl mb-4">🖌️</div>
+                <div class="text-5xl mb-4"></div>
                 <h3 class="font-bold text-lg">Akrilik</h3>
             </div>
 
             <div class="bg-white rounded-xl shadow p-6 text-center">
-                <div class="text-5xl mb-4">💻</div>
+                <div class="text-5xl mb-4"></div>
                 <h3 class="font-bold text-lg">Dijital Sanat</h3>
             </div>
 
             <div class="bg-white rounded-xl shadow p-6 text-center">
-                <div class="text-5xl mb-4">📖</div>
+                <div class="text-5xl mb-4"></div>
                 <h3 class="font-bold text-lg">Manga & Çizgi Roman</h3>
             </div>
 

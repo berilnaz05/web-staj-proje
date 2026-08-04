@@ -12,10 +12,44 @@ use App\Models\Comment;
 use App\Models\Product;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\FriendController;
-
 use App\Models\Friend;
-
 use Illuminate\Http\Request;
+
+use App\Http\Controllers\ArtworkController;
+
+
+//Eserler Sayfası
+Route::get('/eserler', function () {
+    return view('artworks.index');
+})->name('artworks.index');
+
+Route::get('/eserler', [ArtworkController::class, 'index'])
+    ->name('artworks.index');
+
+Route::get('/eser-olustur', [ArtworkController::class, 'create'])
+    ->middleware('auth')
+    ->name('artworks.create');
+
+Route::post('/eser-olustur', [ArtworkController::class, 'store'])
+    ->middleware('auth')
+    ->name('artworks.store');
+
+Route::get('/eser/{artwork}', [ArtworkController::class, 'show'])
+    ->name("artworks.show");
+
+Route::get('/eser/{artwork}/duzenle',
+    [ArtworkController::class, 'edit'])
+    ->name('artworks.edit');
+
+Route::put('/eser/{artwork}',
+    [ArtworkController::class, 'update'])
+    ->name('artworks.update');
+
+Route::delete('/eser/{artwork}',
+    [ArtworkController::class, 'destroy'])
+    ->name('artworks.destroy');
+
+
 
 Route::post('/friend/send/{user}',
     [FriendController::class, 'send'])
@@ -101,9 +135,8 @@ Route::get('/', function () {
 });
 
 
+
 // Admin paneli
-
-
 Route::delete('/admin/urunler/{product}',[AdminController::class, 'deleteProduct'])
     ->middleware(['auth', 'admin'])
     ->name('admin.product.delete');
@@ -175,7 +208,7 @@ Route::middleware('auth')->group(function () {
         ->name('friend.reject');
 
 });
-{;
+
 
     Route::delete('/yorum-sil/{comment}',[ProductController::class, 'deleteComment']
         )->name('products.comment.delete');
@@ -237,6 +270,7 @@ Route::middleware('auth')->group(function () {
 })->middleware('auth')->name('users.index');
 
 
-};
+
+
 
 require __DIR__.'/auth.php';

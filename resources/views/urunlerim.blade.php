@@ -2,9 +2,13 @@
 
 <div class="min-h-screen bg-gray-100">
 
+
     <div class="max-w-7xl mx-auto px-6 py-8">
+        
 
         <div class="flex justify-between items-center mb-8">
+
+            
 
             <h1 class="text-3xl font-bold text-gray-800">
                 Satıştaki Ürünlerim
@@ -56,13 +60,13 @@
                             @if($product->status == 'satista')
 
                                 <span class="inline-block mt-3 px-3 py-1 rounded-full text-sm bg-green-100 text-green-700">
-                                    🟢 Satışta
+                                     Satışta
                                 </span>
 
                             @else
 
                                 <span class="inline-block mt-3 px-3 py-1 rounded-full text-sm bg-gray-200 text-gray-700">
-                                    🔒 Satıldı
+                                     Satıldı
                                 </span>
 
                             @endif

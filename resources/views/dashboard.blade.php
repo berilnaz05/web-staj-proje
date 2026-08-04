@@ -84,11 +84,11 @@
                              Ürünlerim
                         </a>
 
-                        <a href="#" class="block p-3 rounded-lg hover:bg-gray-100">
+                        <a href="{{ route('artworks.index') }}" class="block p-3 rounded-lg hover:bg-gray-100">
                              Eserlerim
                         </a>
 
-                        <a href={{route("sanat-pazari")}} class="block p-3 rounded-lg hover:bg-gray-100">
+                        <a href="{{route('sanat-pazari')}}" class="block p-3 rounded-lg hover:bg-gray-100">
                              Sanat Pazarım
                         </a>
 
@@ -120,98 +120,107 @@
 
             </div>
 
+
             <!-- İçerik -->
-            <!-- İçerik -->
-<div class="col-span-12 md:col-span-9">
+            <div class="col-span-12 md:col-span-9">
 
-    @if($tab == 'friends')
+                @if($tab == 'friends')
 
-        <div class="mb-10">
+                    <div class="mb-10">
 
-            <h2 class="text-2xl font-bold mb-6">
-                Arkadaşlarım
-            </h2>
+                        <h2 class="text-2xl font-bold mb-6">
+                            Arkadaşlarım
+                        </h2>
 
-            <div class="grid md:grid-cols-2 gap-4">
+                        <div class="grid md:grid-cols-2 gap-4">
 
-                @forelse($friends as $friend)
+                            @forelse($friends as $friend)
 
-                    @php
-                        $user =
-                            $friend->sender_id == auth()->id()
-                                ? $friend->receiver
-                                : $friend->sender;
-                    @endphp
+                                @php
+                                    $user =
+                                        $friend->sender_id == auth()->id()
+                                            ? $friend->receiver
+                                            : $friend->sender;
+                                @endphp
 
-                    <div class="bg-white rounded-xl shadow p-5">
+                                <div class="bg-white rounded-xl shadow p-5">
 
-                        <h3 class="font-bold text-lg">
-                            👤 {{ $user->name }}
-                        </h3>
+                                    <h3 class="font-bold text-lg">
+                                        👤 {{ $user->name }}
+                                    </h3>
 
-                    </div>
+                                </div>
 
-                @empty
+                            @empty
 
-                    <div class="text-gray-500">
-                        Henüz arkadaşın yok.
-                    </div>
+                                <div class="text-gray-500">
+                                    Henüz arkadaşın yok.
+                                </div>
 
-                @endforelse
-
-            </div>
-
-        </div>
-
-    @else
-
-        <div class="mb-10">
-
-            <h2 class="text-2xl font-bold mb-6">
-                Son Eklenen Eserler
-            </h2>
-
-            <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-
-                @forelse($artworks as $artwork)
-
-                    <div class="bg-white rounded-xl shadow overflow-hidden">
-
-                        <img
-                            src="{{ asset('storage/' . $artwork->image) }}"
-                            class="w-full h-56 object-cover"
-                        >
-
-                        <div class="p-4">
-
-                            <h3 class="font-bold text-lg">
-                                {{ $artwork->title }}
-                            </h3>
-
-                            <p class="text-gray-500 text-sm mt-2">
-                                {{ $artwork->user->name ?? 'Sanatçı' }}
-                            </p>
-
-                            <div class="flex gap-4 mt-3 text-sm text-gray-500">
-                                <span>0</span>
-                                <span>0</span>
-                            </div>
+                            @endforelse
 
                         </div>
 
                     </div>
 
-                @empty
+                @else
 
-                    <div class="col-span-3 text-center text-gray-500">
-                        Henüz eser paylaşılmamış.
+                    <div class="mb-10">
+
+                        <h2 class="text-2xl font-bold mb-6">
+                            Son Eklenen Eserler
+                        </h2>
+
+                        <div class="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
+
+                            @forelse($artworks as $artwork)
+
+                                <div class="bg-white rounded-xl shadow overflow-hidden">
+
+                                    <img
+                                        src="{{ asset('storage/' . $artwork->cover_image) }}"
+                                        class="w-full h-56 object-cover"
+                                    >
+
+                                    <div class="p-4">
+
+                                        <h3 class="font-bold text-lg">
+                                            {{ $artwork->title }}
+                                        </h3>
+
+                                        <p class="text-gray-500 text-sm mt-2">
+                                            {{ $artwork->user->name ?? 'Sanatçı' }}
+                                        </p>
+
+                                        <div class="flex gap-4 mt-3 text-sm text-gray-500">
+                                            <span>0</span>
+                                            <span>0</span>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                            @empty
+
+                                <div class="col-span-3 text-center text-gray-500">
+                                    Henüz eser paylaşılmamış.
+                                </div>
+
+                            @endforelse
+
+                        </div>
+
                     </div>
 
-                @endforelse
+                @endif
 
             </div>
+
         </div>
-    @endif
+
+    </div>
 
 </div>
+
 </x-app-layout>

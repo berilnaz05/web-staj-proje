@@ -9,21 +9,32 @@ use App\Models\User;
 class FriendController extends Controller
 {
     // Arkadaşlık isteği gönder
-    public function send(User $user)
-    {
-        if ($user->id == auth()->id()) {
-            return back();
-        }
-
-        Friend::firstOrCreate([
-            'sender_id' => auth()->id(),
-            'receiver_id' => $user->id,
-        ], [
-            'status' => 'pending'
-        ]);
-
-        return back()->with('success', 'Arkadaşlık isteği gönderildi.');
+public function send(User $user)
+{
+    if ($user->id == auth()->id()) {
+        return back();
     }
+
+    $exists = Friend::where(function ($q) use ($user) {
+        $q->where('sender_id', auth()->id())
+          ->where('receiver_id', $user->id);
+    })->orWhere(function ($q) use ($user) {
+        $q->where('sender_id', $user->id)
+          ->where('receiver_id', auth()->id());
+    })->exists();
+
+    if ($exists) {
+        return back()->with('error', 'Bu kullanıcıyla zaten arkadaşsınız veya bekleyen isteğiniz var.');
+    }
+
+    Friend::create([
+        'sender_id' => auth()->id(),
+        'receiver_id' => $user->id,
+        'status' => 'pending'
+    ]);
+
+    return back()->with('success', 'Arkadaşlık isteği gönderildi.');
+}
 
     // İsteği kabul et
     public function accept(Friend $friend)
