@@ -10,10 +10,81 @@
     </header>
 
     <form id="send-verification" method="post" action="{{ route('verification.send') }}">
+        
         @csrf
     </form>
 
-    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6">
+    <form method="post" action="{{ route('profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data">
+        <div class="mb-6">
+
+            <label for="avatarInput" class="cursor-pointer">
+
+                @if(Auth::user()->avatar)
+
+                    <img
+                        src="{{ asset('storage/' . Auth::user()->avatar) }}"
+                        class="w-32 h-32 rounded-full object-cover border-4 border-purple-500 hover:opacity-80">
+
+                @else
+
+                    <div class="w-32 h-32 rounded-full bg-gray-300 flex items-center justify-center text-4xl hover:bg-gray-400">
+                        👤
+                    </div>
+
+                @endif
+
+            </label>
+
+            <input
+                id="avatarInput"
+                type="file"
+                name="avatar"
+                accept="image/*"
+                class="hidden">
+
+        </div>
+        
+        <div class="mb-6">
+
+            <label class="block font-semibold mb-2">
+                Profil Fotoğrafı
+            </label>
+
+            <input
+                type="file"
+                name="avatar"
+                accept="image/*"
+                class="w-full border rounded-lg p-2">
+
+        </div>
+
+        <div class="mb-6">
+
+            <label class="block font-semibold mb-2">
+                Kullanıcı Adı
+            </label>
+
+            <input
+                type="text"
+                name="username"
+                value="{{ old('username', Auth::user()->username) }}"
+                class="w-full border rounded-lg p-3">
+
+        </div>
+
+        <div class="mb-6">
+
+            <label class="block font-semibold mb-2">
+                Hakkımda
+            </label>
+
+            <textarea
+                name="bio"
+                rows="4"
+                class="w-full border rounded-lg p-3">{{ old('bio', Auth::user()->bio) }}</textarea>
+
+        </div>
+
         @csrf
         @method('patch')
 

@@ -19,7 +19,6 @@
         <div class="flex items-center gap-10">
 
             
-
             <div class="hidden md:flex items-center gap-6 text-gray-700 font-medium">
 
 
@@ -43,7 +42,7 @@
             👥
         </a>
 
-        <a href="{{ route('friend.requests') }}" class="relative">
+        <a href="#" class="relative">
             🔔
             @if($friendRequestCount > 0)
             <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
@@ -53,7 +52,21 @@
         </a>
 
         <a href="{{ route('profile.edit') }}">
-            👤
+
+            @if(auth()->user()->avatar)
+
+                <img
+                    src="{{ asset('storage/' . auth()->user()->avatar) }}"
+                    class="w-10 h-10 rounded-full object-cover border">
+
+            @else
+
+                <div class="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center">
+                    Profil
+                </div>
+
+            @endif
+
         </a>
 
     </div>
@@ -92,8 +105,8 @@
                              Sanat Pazarım
                         </a>
 
-                        <a href="#" class="block p-3 rounded-lg hover:bg-gray-100">
-                             Keşfet
+                        <a href= "{{route('artworks.index')}}" class="block p-3 rounded-lg hover:bg-gray-100">
+                             Keşfet 
                         </a>
 
                         <a href="{{ route('dashboard',['tab'=>'friends']) }}"

@@ -8,6 +8,8 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use Illuminate\Support\Facades\Storage;
+
 
 class ProfileController extends Controller
 {
@@ -25,17 +27,45 @@ class ProfileController extends Controller
      * Update the user's profile information.
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
-    {
-        $request->user()->fill($request->validated());
+{
+    $request->validate([
+        'name' => ['required', 'string', 'max:255'],
+        'email' => ['required', 'email'],
+        'username' => ['nullable', 'string', 'max:50'],
+        'bio' => ['nullable', 'max:500'],
+        'avatar' => ['nullable', 'image'],
+    ]);
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+    $user = $request->user();
+
+    $user->name = $request->name;
+    $user->email = $request->email;
+    $user->username = $request->username;
+    $user->bio = $request->bio;
+
+
+    if ($request->hasFile('avatar')) {
+
+        if ($user->avatar) {
+            Storage::disk('public')->delete($user->avatar);
         }
 
-        $request->user()->save();
+        $user->avatar = $request
+            ->file('avatar')
+            ->store('avatars', 'public');
 
-        return Redirect::route('profile.edit')->with('status', 'profile-updated');
     }
+
+    if ($user->isDirty('email')) {
+        $user->email_verified_at = null;
+    }
+
+    $user->save();
+
+    return Redirect::route('profile.edit')
+        ->with('status', 'profile-updated');
+
+}
 
     /**
      * Delete the user's account.
