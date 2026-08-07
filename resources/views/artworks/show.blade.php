@@ -62,6 +62,39 @@
 
     </div>
 
+    <div class="bg-white rounded-2xl shadow p-8 mt-6">
+
+    <h2 class="text-2xl font-bold mb-6">
+        📚 Bölümler
+    </h2>
+
+    @forelse($artwork->chapters as $chapter)
+
+        <div class="flex justify-between items-center border-b py-4">
+
+            <div>
+                <h3 class="font-semibold">
+                    {{ $chapter->title }}
+                </h3>
+            </div>
+
+            <a href="{{ route('chapters.show', $chapter->id) }}"
+               class="bg-purple-600 text-white px-4 py-2 rounded-lg hover:bg-purple-700">
+                Oku
+            </a>
+
+        </div>
+
+    @empty
+
+        <p class="text-gray-500">
+            Henüz bölüm eklenmemiş.
+        </p>
+
+    @endforelse
+
+</div>
+
 </div>
 
 </x-app-layout>

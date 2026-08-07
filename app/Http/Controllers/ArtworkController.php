@@ -57,6 +57,13 @@ class ArtworkController extends Controller
 
     public function show(Artwork $artwork)
     {
+        $artwork->load([
+            'user',
+            'category',
+            'chapters',
+            'comments.user'
+        ]);
+
         return view('artworks.show', compact('artwork'));
     }
 

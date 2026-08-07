@@ -10,6 +10,14 @@
     )
     ->where('status','pending')
     ->count();
+
+
+    $messageCount = \App\Models\Message::where(
+        'receiver_id',
+        auth()->id()
+    )
+    ->where('is_read', false)
+    ->count();
     @endphp
     
 <nav class="bg-white shadow">
@@ -38,21 +46,80 @@
 
         </form>
 
-        <a href="{{ route('friend.requests') }}" class="relative">
-            👥
-        </a>
+        
 
-        <a href="#" class="relative">
-            🔔
+        <div class="relative">
+
+            <button onclick="toggleNotification()"
+            class="relative text-xl">
+
+                🛎️
+
+                @if($friendRequestCount + $messageCount > 0)
+
+                <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
+                    {{ $friendRequestCount + $messageCount }}
+                </span>
+
+                @endif
+
+            </button>
+
+
+            <div id="notificationBox"
+                class="hidden absolute right-0 top-12 w-80 h-96 bg-white rounded-2xl shadow-xl border z-50">
+            
+
+            <div class="p-4 border-b font-bold">
+                Bildirimler
+            </div>
+
+
             @if($friendRequestCount > 0)
-            <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
-                {{ $friendRequestCount }}
-            </span>
+
+            <a href="{{ route('friend.requests') }}"
+            class="block px-4 py-3 hover:bg-gray-100">
+
+            👥 
+            {{ $friendRequestCount }} yeni arkadaşlık isteğin var
+
+            </a>
+
             @endif
-        </a>
+
+
+
+            @if($messageCount > 0)
+
+            <a href="{{ route('messages.index') }}"
+            class="block px-4 py-3 hover:bg-gray-100">
+
+            💬
+            {{ $messageCount }} yeni mesajın var
+
+            </a>
+
+            @endif
+
+
+
+            @if($friendRequestCount == 0 && $messageCount == 0)
+
+            <div class="p-4 text-gray-500 text-center">
+
+            Henüz bildirim yok.
+
+            </div>
+
+            @endif
+
+
+            </div>
+
+            </div>
 
         <a href="{{ route('profile.edit') }}">
-
+            
             @if(auth()->user()->avatar)
 
                 <img
@@ -98,7 +165,7 @@
                         </a>
 
                         <a href="{{ route('artworks.index') }}" class="block p-3 rounded-lg hover:bg-gray-100">
-                             Eserlerim
+                             Seriler
                         </a>
 
                         <a href="{{route('sanat-pazari')}}" class="block p-3 rounded-lg hover:bg-gray-100">
@@ -114,7 +181,7 @@
                             Arkadaşlar
                         </a>
 
-                        <a href="#" class="block p-3 rounded-lg hover:bg-gray-100">
+                        <a href="{{route('messages.index')}}" class="block p-3 rounded-lg hover:bg-gray-100">
                              Mesajlar
                         </a>
 
@@ -237,3 +304,27 @@
 </div>
 
 </x-app-layout>
+
+<script>
+
+function toggleNotification(){
+
+    document
+    .getElementById('notificationBox')
+    .classList
+    .toggle('hidden');
+
+}
+
+
+document.addEventListener('click', function(e){
+
+    let box = document.getElementById('notificationBox');
+
+    if(!e.target.closest('.relative')){
+        box.classList.add('hidden');
+    }
+
+});
+
+</script>

@@ -15,7 +15,24 @@ use App\Http\Controllers\FriendController;
 use App\Models\Friend;
 use Illuminate\Http\Request;
 
+
 use App\Http\Controllers\ArtworkController;
+
+use App\Http\Controllers\MessageController;
+
+//Mesajlar
+
+Route::post('/messages/send', [MessageController::class, 'send'])
+    ->name('messages.send');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/messages', [MessageController::class, 'index']);
+    Route::get('/messages/load/{user}', [MessageController::class, 'getMessages']);
+    Route::post('/messages/{user}', [MessageController::class, 'send']);
+
+});
+
+
 
 
 //Eserler Sayfası
@@ -271,6 +288,13 @@ Route::middleware('auth')->group(function () {
 
 
 
+
+Route::middleware('auth')->group(function () {
+
+    Route::get('/messages', [MessageController::class, 'index'])
+        ->name('messages.index');
+
+});
 
 
 require __DIR__.'/auth.php';

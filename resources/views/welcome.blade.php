@@ -18,7 +18,7 @@
             </h1>
 
             <div class="hidden md:flex space-x-8 text-gray-700 font-medium">
-                <a href="#seriler" class="hover:text-purple-600">Seriler</a>
+                <a href="{{ route('urunlerim') }}" class="hover:text-purple-600">Seriler</a>
                 <a href="{{ route('sanat-pazari') }}"class="hover:text-purple-600">
                 Sanat Pazarı </a>
 
