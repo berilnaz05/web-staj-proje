@@ -1,3 +1,23 @@
+
+@php
+
+$friendRequestCount = \App\Models\Friend::where(
+    'receiver_id',
+    auth()->id()
+)
+->where('status', 'pending')
+->count();
+
+$messageCount = \App\Models\Message::where(
+    'receiver_id',
+    auth()->id()
+)
+->where('is_read', false)
+->count();
+
+@endphp
+
+
 <nav class="bg-gray-950 border-b border-gray-800">
     <!-- Primary Navigation Menu -->
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -6,12 +26,71 @@
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center px-4">
                     
-                <a href="{{ route('dashboard') }}">
+                <nav class="bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-500 shadow-lg">
 
-                        <x-application-logo class="block h-12 w-auto fill-current text-white" />
-                    </a>
-                </div>
+    <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
+
+        <a href="{{ route('dashboard') }}"
+           class="text-4xl font-bold text-white">
+
+            ARTYUM
+
+        </a>
+
+        <div class="flex items-center gap-4">
+
+            <form action="{{ route('search') }}" method="GET">
+
+                <input
+                    type="text"
+                    name="q"
+                    placeholder="Eser, ürün veya kullanıcı ara..."
+                    class="w-80 px-4 py-2 rounded-full text-black">
+
+            </form>
+
+            <div class="relative">
+
+                <button onclick="toggleNotification()"
+                        class="text-2xl">
+
+                    🔔
+
+                    @if($friendRequestCount + $messageCount > 0)
+
+                        <span class="absolute -top-2 -right-3 bg-red-500 text-white text-xs px-2 rounded-full">
+                            {{ $friendRequestCount + $messageCount }}
+                        </span>
+
+                    @endif
+
+                </button>
+
             </div>
+
+            <a href="{{ route('profile.edit') }}">
+
+                @if(auth()->user()->avatar)
+
+                    <img
+                        src="{{ asset('storage/' . auth()->user()->avatar) }}"
+                        class="w-12 h-12 rounded-full object-cover border-2 border-white">
+
+                @else
+
+                    <div class="w-12 h-12 rounded-full bg-white flex items-center justify-center">
+                        👤
+                    </div>
+
+                @endif
+
+            </a>
+
+        </div>
+
+    </div>
+
+</nav>
 
             <!-- Settings Dropdown -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">

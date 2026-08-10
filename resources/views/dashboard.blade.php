@@ -1,6 +1,6 @@
 <x-app-layout>
 
-<div class="min-h-screen bg-gray-100">
+<nav class="bg-gradient-to-r from-purple-600 to-pink-500 text-white px-6  py-3">
 
     <!-- Üst Navbar -->
     @php
@@ -19,22 +19,8 @@
     ->where('is_read', false)
     ->count();
     @endphp
-    
-<nav class="bg-white shadow">
-
-    <div class="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-
-        <div class="flex items-center gap-10">
-
-            
-            <div class="hidden md:flex items-center gap-6 text-gray-700 font-medium">
-
-
-            </div>
-
-        </div>
-
-            <div class="flex items-center gap-4">
+ 
+        <div class="flex items-center gap-4">
 
         <form action="{{ route('search') }}" method="GET">
 
@@ -45,10 +31,13 @@
                 class="border rounded-full px-4 py-2 w-72">
 
         </form>
-
+        <!-- Logo -->
+                <div class="shrink-0 flex items-center px-4">
+                    
+                <nav class="bg-gradient-to-r from-purple-600 via-fuchsia-500 to-pink-500 shadow-lg"></nav>
         
 
-        <div class="relative">
+            <div class="relative">
 
             <button onclick="toggleNotification()"
             class="relative text-xl">
@@ -136,6 +125,8 @@
 
         </a>
 
+        
+
     </div>
 
     </div>
@@ -183,10 +174,6 @@
 
                         <a href="{{route('messages.index')}}" class="block p-3 rounded-lg hover:bg-gray-100">
                              Mesajlar
-                        </a>
-
-                        <a href="#" class="block p-3 rounded-lg hover:bg-gray-100">
-                             Beğendiklerim
                         </a>
 
                         <a href="{{ route('profile.edit') }}"

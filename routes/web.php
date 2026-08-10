@@ -40,6 +40,9 @@ Route::get('/eserler', function () {
     return view('artworks.index');
 })->name('artworks.index');
 
+Route::get('/eserler', [ArtworkController::class, 'search'])
+    ->name("artworks.show");
+
 Route::get('/eserler', [ArtworkController::class, 'index'])
     ->name('artworks.index');
 

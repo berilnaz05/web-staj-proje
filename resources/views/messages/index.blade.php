@@ -15,6 +15,13 @@
 
             @foreach($users as $user)
 
+                @php
+                $unread = \App\Models\Message::where('sender_id', $user->id)
+                    ->where('receiver_id', auth()->id())
+                    ->where('is_read', false)
+                    ->count();
+                @endphp
+
                 <button
                     onclick="selectFriend('{{ $user->name }}', {{ $user->id }})"
                     class="w-full flex items-center gap-3 p-4 hover:bg-gray-100 border-b text-left">
@@ -33,9 +40,17 @@
 
                     @endif
 
-                    <span class="font-medium">
-                        {{ $user->name }}
-                    </span>
+                    <div class="flex items-center gap-2">
+
+                        <span class="font-medium">
+                            {{ $user->name }}
+                        </span>
+
+                        @if($unread > 0)
+                            <span class="w-3 h-3 bg-red-500 rounded-full"></span>
+                        @endif
+
+                    </div>
 
                 </button>
 
@@ -122,6 +137,8 @@
 
 <script>
 
+
+
 let aktifArkadas = null;
 
 async function mesajlariYukle(id)
@@ -132,15 +149,42 @@ async function mesajlariYukle(id)
 
     let html = '';
 
+    let lastDate = '';
+
     messages.forEach(message => {
+
+        const saat = new Date(message.created_at)
+            .toLocaleTimeString('tr-TR', {
+                hour: '2-digit',
+                minute: '2-digit'
+            });
+
+        let currentDate = new Date(message.created_at)
+            .toLocaleDateString('tr-TR');
+
+        if(lastDate !== currentDate)
+        {
+            html += `
+                <div class="text-center my-4">
+                    <span class="bg-gray-200 px-3 py-1 rounded-full text-sm text-gray-600">
+                        ${currentDate}
+                    </span>
+                </div>
+            `;
+
+            lastDate = currentDate;
+        }
 
         if(message.sender_id == {{ auth()->id() }})
         {
             html += `
                 <div class="flex justify-end mb-2">
-                    <span class="bg-purple-600 text-white px-4 py-2 rounded-xl">
+                    <div class="bg-purple-600 text-white px-4 py-2 rounded-xl max-w-[70%]">
                         ${message.message}
-                    </span>
+                        <div class="text-xs text-purple-200 mt-1 text-right">
+                            ${saat}
+                        </div>
+                    </div>
                 </div>
             `;
         }
@@ -148,9 +192,12 @@ async function mesajlariYukle(id)
         {
             html += `
                 <div class="flex justify-start mb-2">
-                    <span class="bg-gray-200 px-4 py-2 rounded-xl">
+                    <div class="bg-gray-200 text-gray-800 px-4 py-2 rounded-xl max-w-[70%]">
                         ${message.message}
-                    </span>
+                        <div class="text-xs text-gray-500 mt-1 text-right">
+                            ${saat}
+                        </div>
+                    </div>
                 </div>
             `;
         }
@@ -160,6 +207,7 @@ async function mesajlariYukle(id)
     document.getElementById('chatMessages').innerHTML = html;
 
     let chatBox = document.getElementById('chatMessages');
+
     chatBox.scrollTop = chatBox.scrollHeight;
 }
 

@@ -15,9 +15,10 @@ class MessageController extends Controller
 public function send(Request $request)
 {
     Message::create([
-        'sender_id' => auth()->id(),
-        'receiver_id' => $request->receiver_id,
-        'message' => $request->message,
+    'sender_id' => auth()->id(),
+    'receiver_id' => $request->receiver_id,
+    'message' => $request->message,
+    'is_read' => false,
     ]);
 
     Notification::create([
@@ -34,6 +35,8 @@ public function send(Request $request)
 
 public function getMessages(User $user)
 {
+    
+
     Message::where('sender_id', $user->id)
         ->where('receiver_id', auth()->id())
         ->where('is_read', false)
